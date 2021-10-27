@@ -7,10 +7,5 @@ dispatcher reads that channel, and for each random number starts a maintainer go
 
 the manager keeps track of updates for that number, and if a timeout expires it will message the dispatcher, and upon acknowledgement kill the goroutine.
 
-
-Change the generator values to change the rate and the range of random numbers. For OS's where ticker can't run at high rate, add start more generators.
-
-go generator(randoms, 1000, 50)
-
-1000 is the random number range, 50 is the rate.
+Update the constants in main.go to play around. Note that some OS (OpenBSD, Windows, more?) can't handle a ticker rate faster than 50 per second.
 
