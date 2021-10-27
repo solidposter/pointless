@@ -11,7 +11,7 @@ func dispatcher(blocks <-chan datablock, lifetime int) {
 	var id int
 
 	ticker := time.NewTicker(1 * time.Second)
-	prune := make(chan int)
+	prune := make(chan int, 100)
 	for {
 		select {
 		case d = <-blocks:
@@ -25,11 +25,13 @@ func dispatcher(blocks <-chan datablock, lifetime int) {
 				t[d.number] <- d
 			}
 		case id = <-prune:
+			// fmt.Println("DEBUG: DELETING", id)
 			t[id] <- datablock{-1, time.Now()}
 			delete(t, id)
 		case <-ticker.C:
 			fmt.Println("Dispatcher map size:", len(t))
 			fmt.Println("Input queue size:", len(blocks))
+			fmt.Println("Prune queue size:", len(prune))
 		}
 	}
 }

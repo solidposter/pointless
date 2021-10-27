@@ -25,8 +25,8 @@ func maintainer(id int, lifetime int, blocks <-chan datablock, prunereq chan<- i
 			// on failure to write, reset the timer to one sec for later try
 			select {
 			case prunereq <- id:
-				//		fmt.Println("DEBUG: PRUNE BLOCKED FOR ID", id)
 			default:
+				// fmt.Println("DEBUG: PRUNE BLOCKED FOR ID", id)
 				timer = time.NewTimer(1 * time.Second)
 			}
 		}
