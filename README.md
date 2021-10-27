@@ -20,3 +20,15 @@ On my OpenBSD test server:
 
 Gives me around 245k active goroutines once it stabilizes.
 
+----
+
+On my AWS t3.micro running Linux:
+
+        const interval int = 600000 // interval for random numbers
+        const rate int = 6000       // rate per generator
+        const generators int = 1    // number of generators
+        const lifetime int = 30     // data lifetime in seconds
+
+Gives me around 155k active goroutines, and I'm almost out of memory.
+
+
