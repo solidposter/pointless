@@ -3,9 +3,9 @@ I generate random numbers, and use a goroutine to manage the random number.
 
 generator(s) generate random numbers, encapsulates in a struct and inserts them into a channel.
 
-dispatcher reads that channel, and for each random number starts a maintainer go-routine to manage it.
+dispatcher reads that channel, and for each random number starts a maintainer goroutine to manage it.
 
-the manager keeps track of updates for that number, and if a time-out expires it will message the dispatcher, and upon acknowledgement kill the go-routine.
+the manager keeps track of updates for that number, and if a timeout expires it will message the dispatcher, and upon acknowledgement kill the goroutine.
 
 
 Change the generator values to change the rate and the range of random numbers. For OS's where ticker can't run at high rate, add start more generators.
