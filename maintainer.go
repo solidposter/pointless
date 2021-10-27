@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -20,8 +21,16 @@ func maintainer(id int, lifetime int, blocks <-chan datablock, prunereq chan<- i
 				timer = time.NewTimer(time.Duration(lifetime) * time.Second)
 			}
 		case <-timer.C:
-			// request exit of goroutine, id == -1 will return on chan block
-			prunereq <- id
+			select {
+			case prunereq <- id:
+				// request exit of goroutine
+				// dispatcher with ack with a id==-1 on block chan
+				fmt.Println("DEBUG: PRUNE BLOCKED FOR ID", id)
+			default:
+				// prunereq channel blocked
+				// try again in one sec, by resetting timer
+				timer = time.NewTimer(1 * time.Second)
+			}
 		}
 	}
 }
