@@ -21,7 +21,7 @@ func dispatcher(blocks <-chan datablock, lifetime int, pruneQsize int) {
 			if ok == true {
 				t[d.number] <- d
 			} else {
-				m := make(chan datablock)
+				m := make(chan datablock, 10)
 				go maintainer(d.number, lifetime, m, prune)
 				t[d.number] = m
 				t[d.number] <- d
