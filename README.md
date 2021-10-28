@@ -31,4 +31,20 @@ On my AWS t3.micro running Linux:
 
 Gives me around 155k active goroutines, and I'm almost out of memory.
 
+----
+
+On my FreeBSD13 on a 64-core AMD Epyc I did:
+
+
+        const interval int = 20000000 // interval for random numbers
+        const rate int = 5000       // rate per generator
+        const generators int = 40    // number of generators
+        const lifetime int = 30     // data lifetime in seconds
+
+        const inputQsize int = 10000 // buffer size generators to dispatcher
+        const pruneQsize int = 10000 // buffer size mainters to dispatcher
+
+It is running around 5M active goroutines, with load across the CPU looking very nice. Looks like GC or something kicks in at times, 12000% CPU usage :)
+
+
 
