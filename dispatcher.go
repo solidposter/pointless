@@ -27,7 +27,6 @@ func dispatcher(blocks <-chan datablock, lifetime int, pruneQsize int) {
 				t[d.number] <- d
 			}
 		case id = <-prune:
-			// fmt.Println("DEBUG: DELETING", id)
 			t[id] <- datablock{-1, time.Now()}
 			delete(t, id)
 		case <-ticker.C:
