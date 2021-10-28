@@ -2,6 +2,7 @@ package main
 
 import (
 	"math/rand"
+	"sync/atomic"
 	"time"
 )
 
@@ -15,7 +16,14 @@ func generator(output chan<- datablock, max int, rate int) {
 		select {
 		case d.timestamp = <-ticker.C:
 			d.number = r.Intn(max)
-			output <- d
+			select {
+			case output <- d:
+				// Value added to queue
+			default:
+				// queueu blocked
+				// increment queue block counter
+				atomic.AddUint64(&randomQblocks, 1)
+			}
 		}
 	}
 }
