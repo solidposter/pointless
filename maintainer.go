@@ -2,6 +2,7 @@ package main
 
 import (
 	//	"fmt"
+	"sync/atomic"
 	"time"
 )
 
@@ -27,6 +28,7 @@ func maintainer(id int, lifetime int, blocks <-chan datablock, prunereq chan<- i
 			case prunereq <- id:
 			default:
 				// fmt.Println("DEBUG: PRUNE BLOCKED FOR ID", id)
+				atomic.AddUint64(&pruneQblocks, 1)
 				timer = time.NewTimer(1 * time.Second)
 			}
 		}
