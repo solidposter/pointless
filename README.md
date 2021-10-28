@@ -46,5 +46,8 @@ On my FreeBSD13 on a 64-core AMD Epyc I did:
 
 It is running around 5M active goroutines, with load across the CPU looking very nice. Looks like GC or something kicks in at times, 12000% CPU usage :)
 
+----
+
+In summary, goroutines scale well.
 
 
