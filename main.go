@@ -2,10 +2,10 @@ package main
 
 func main() {
 
-	const interval int = 100000 // interval for random numbers
-	const rate int = 50         // rate per generator
-	const generators int = 100  // number of generators
-	const lifetime int = 30     // data lifetime in seconds
+	const interval int = 50000 // interval for random numbers
+	const rate int = 50        // rate per generator
+	const generators int = 10  // number of generators
+	const lifetime int = 30    // data lifetime in seconds
 
 	const inputQsize int = 100 // buffer size generators to dispatcher
 	const pruneQsize int = 100 // buffer size mainters to dispatcher
