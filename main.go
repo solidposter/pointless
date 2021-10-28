@@ -8,7 +8,7 @@ func main() {
 	const lifetime int = 30    // data lifetime in seconds
 
 	const inputQsize int = 100 // buffer size generators to dispatcher
-	const pruneQsize int = 100 // buffer size mainters to dispatcher
+	const pruneQsize int = 100 // buffer size maintainers to dispatcher
 
 	go reporter(1)
 
