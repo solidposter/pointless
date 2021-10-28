@@ -7,13 +7,16 @@ func main() {
 	const generators int = 100  // number of generators
 	const lifetime int = 30     // data lifetime in seconds
 
+	const inputQsize int = 100 // buffer size generators to dispatcher
+	const pruneQsize int = 100 // buffer size mainters to dispatcher
+
 	go reporter(1)
 
-	randoms := make(chan datablock, 100)
+	randoms := make(chan datablock, inputQsize)
 	for i := 0; i < generators; i++ {
 		go generator(randoms, interval, rate)
 	}
-	go dispatcher(randoms, lifetime)
+	go dispatcher(randoms, lifetime, pruneQsize)
 
 	<-(chan int)(nil) // wait forever
 }

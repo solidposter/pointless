@@ -5,14 +5,14 @@ import (
 	"time"
 )
 
-func dispatcher(blocks <-chan datablock, lifetime int) {
+func dispatcher(blocks <-chan datablock, lifetime int, pruneQsize int) {
 	t := make(map[int]chan datablock)
 	d := datablock{}
 	var numblocks int = 0
 	var id int
 
 	ticker := time.NewTicker(1 * time.Second)
-	prune := make(chan int, 10)
+	prune := make(chan int, pruneQsize)
 	for {
 		select {
 		case d = <-blocks:
