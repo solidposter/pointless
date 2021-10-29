@@ -34,10 +34,10 @@ func generator(output chan<- datablock, max int, rate int) {
 			d.number = r.Intn(max)
 			select {
 			case output <- d:
-				// Value added to queue
+				// Value added to channel
 			default:
-				// queueu blocked
-				// increment queue block counter
+				// channel blocked
+				// increment channel blocked counter
 				atomic.AddUint64(&randomQblocks, 1)
 			}
 		}
