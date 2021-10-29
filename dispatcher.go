@@ -8,7 +8,8 @@ import (
 func dispatcher(blocks <-chan datablock, lifetime int, pruneQsize int) {
 	t := make(map[int]chan datablock)
 	d := datablock{}
-	var numblocks int = 0
+	var numblocks int
+	var numprunes int
 	var id int
 
 	ticker := time.NewTicker(1 * time.Second)
@@ -27,12 +28,15 @@ func dispatcher(blocks <-chan datablock, lifetime int, pruneQsize int) {
 				t[d.number] <- d
 			}
 		case id = <-prune:
+			numprunes++
 			t[id] <- datablock{-1, time.Now()}
 			delete(t, id)
 		case <-ticker.C:
 			fmt.Println("Dispatcher values received:", numblocks)
+			fmt.Println("Dispatcher prunes received:", numprunes)
 			fmt.Println("Dispatcher map size:", len(t))
 			numblocks = 0
+			numprunes = 0
 		}
 	}
 }

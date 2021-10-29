@@ -15,8 +15,8 @@ func reporter(interval int) {
 	for {
 		select {
 		case <-ticker.C:
-			fmt.Println("pruneQblocks: ", atomic.LoadUint64(&pruneQblocks))
 			fmt.Println("randomQblocks:", atomic.LoadUint64(&randomQblocks))
+			fmt.Println("pruneQblocks: ", atomic.LoadUint64(&pruneQblocks))
 			// reset the counters to zero
 			atomic.StoreUint64(&pruneQblocks, 0)
 			atomic.StoreUint64(&randomQblocks, 0)
