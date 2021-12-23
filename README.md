@@ -8,6 +8,7 @@ dispatcher reads that channel, and for each random number starts a maintainer go
 the manager keeps track of updates for that number, and if a timeout expires it will message the dispatcher, and upon acknowledgement kill the goroutine.
 
 Some old tests when the settings used constants instead of flags on the command line:
+
 ----
 
 On my OpenBSD test server:
