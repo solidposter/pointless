@@ -7,8 +7,7 @@ dispatcher reads that channel, and for each random number starts a maintainer go
 
 the manager keeps track of updates for that number, and if a timeout expires it will message the dispatcher, and upon acknowledgement kill the goroutine.
 
-Update the constants in main.go to play around. Note that some OS (OpenBSD, Windows, more?) can't handle a ticker rate faster than 50 per second.
-
+Some old tests when the settings used constants instead of flags on the command line:
 ----
 
 On my OpenBSD test server:
@@ -49,5 +48,5 @@ It is running around 5M active goroutines, with load across the CPU looking very
 ----
 
 In summary, goroutines scale well.
-
+Comparing OS, Linux is by far the king of the hill for running pointless.
 
