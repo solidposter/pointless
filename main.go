@@ -1,6 +1,9 @@
 package main
 
-import "flag"
+import (
+	"flag"
+	"time"
+)
 
 //
 // Copyright (c) 2021 Tony Sarendal <tony@polarcap.org>
@@ -34,6 +37,7 @@ func main() {
 	randoms := make(chan datablock, *inputqPtr)
 	for i := 0; i < *generatorPtr; i++ {
 		go generator(randoms, *intervalPtr, *ratePtr)
+		time.Sleep(time.Duration(1000*1000*1000 / *ratePtr) * time.Nanosecond)
 	}
 	go dispatcher(randoms, *lifetimePtr, *pruneqPtr)
 
