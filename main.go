@@ -1,5 +1,7 @@
 package main
 
+import "flag"
+
 //
 // Copyright (c) 2021 Tony Sarendal <tony@polarcap.org>
 //
@@ -18,21 +20,22 @@ package main
 
 func main() {
 
-	const interval int = 50000 // interval for random numbers
-	const rate int = 50        // rate per generator
-	const generators int = 10  // number of generators
-	const lifetime int = 30    // data lifetime in seconds
+	intervalPtr := flag.Int("i", 5000, "interval of generated random numbers (range)")
+	ratePtr := flag.Int("r", 50, "rate of random numbers per second generated, per generator")
+	generatorPtr := flag.Int("g", 10, "number of random number generators")
+	lifetimePtr := flag.Int("l", 30, "data lifetime, unless refreshed, prune")
 
-	const inputQsize int = 100 // buffer size generators to dispatcher
-	const pruneQsize int = 100 // buffer size maintainers to dispatcher
+	inputqPtr := flag.Int("q", 100, "length of generator channel buffer")
+	pruneqPtr := flag.Int("p", 100, "length of prune channel buffer")
+	flag.Parse()
 
 	go reporter(1)
 
-	randoms := make(chan datablock, inputQsize)
-	for i := 0; i < generators; i++ {
-		go generator(randoms, interval, rate)
+	randoms := make(chan datablock, *inputqPtr)
+	for i := 0; i < *generatorPtr; i++ {
+		go generator(randoms, *intervalPtr, *ratePtr)
 	}
-	go dispatcher(randoms, lifetime, pruneQsize)
+	go dispatcher(randoms, *lifetimePtr, *pruneqPtr)
 
 	<-(chan int)(nil) // wait forever
 }
