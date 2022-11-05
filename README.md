@@ -7,31 +7,31 @@ The maintainer waits for an update or a timeout. If the maintainer gets an updat
 
 Pointless is configured with command line options.
 
-nacho$ pointless -h
-Usage of pointless:
-  -g int
-        number of random number generators (default 10)
-  -i int
-        interval of generated random numbers (range) (default 5000)
-  -l int
-        data lifetime, unless refreshed, prune (default 30)
-  -p int
-        length of prune channel buffer (default 100)
-  -q int
-        length of generator channel buffer (default 100)
-  -r int
-        rate of random numbers per second generated, per generator (default 50)
-nacho$
+>nacho$ pointless -h
+>Usage of pointless:
+>  -g int
+>        number of random number generators (default 10)
+>  -i int
+>        interval of generated random numbers (range) (default 5000)
+>  -l int
+>        data lifetime, unless refreshed, prune (default 30)
+>  -p int
+>        length of prune channel buffer (default 100)
+>  -q int
+>        length of generator channel buffer (default 100)
+>  -r int
+>        rate of random numbers per second generated, per generator (default 50)
+>nacho$
 
 Example run on my old quad-core server, running OpenBSD7.2-current with go1.19.2:
 
-nacho$ pointless -i 10000000 -q 100000 -p 100000 -g 3400
-... 30 minutes or so to stabilize, let GC hurt a little, and so on.
-Dispatcher values received: 168983
-Dispatcher prunes received: 102453
-Dispatcher map size: 3960029
-randomQblocks: 0
-pruneQblocks:  0
+>nacho$ pointless -i 10000000 -q 100000 -p 100000 -g 3400
+>... 30 minutes or so to stabilize, let GC hurt a little, and so on.
+>Dispatcher values received: 168983
+>Dispatcher prunes received: 102453
+>Dispatcher map size: 3960029
+>randomQblocks: 0
+>pruneQblocks:  0
 
 Around 4M goroutines on an old server running OpenBSD, not bad.
 
