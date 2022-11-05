@@ -35,11 +35,11 @@ func main() {
 	go reporter(1)
 
 	randoms := make(chan datablock, *inputqPtr)
+	go dispatcher(randoms, *lifetimePtr, *pruneqPtr)
 	for i := 0; i < *generatorPtr; i++ {
 		go generator(randoms, *intervalPtr, *ratePtr)
 		time.Sleep(time.Duration(1000*1000*1000 / *ratePtr) * time.Nanosecond)
 	}
-	go dispatcher(randoms, *lifetimePtr, *pruneqPtr)
 
 	<-(chan int)(nil) // wait forever
 }
