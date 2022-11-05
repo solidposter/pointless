@@ -23,13 +23,13 @@ import (
 
 func main() {
 
-	intervalPtr := flag.Int("i", 5000, "interval of generated random numbers (range)")
-	ratePtr := flag.Int("r", 50, "rate of random numbers per second generated, per generator")
-	generatorPtr := flag.Int("g", 10, "number of random number generators")
-	lifetimePtr := flag.Int("l", 30, "data lifetime, unless refreshed, prune")
+	intervalPtr := flag.Int("i", 5000, "range of generated random numbers")
+	ratePtr := flag.Int("r", 50, "generator rate in numbers per second")
+	generatorPtr := flag.Int("g", 10, "number of generators")
+	lifetimePtr := flag.Int("l", 30, "maintainer timeout in seconds")
 
-	inputqPtr := flag.Int("q", 100, "length of generator channel buffer")
-	pruneqPtr := flag.Int("p", 100, "length of prune channel buffer")
+	inputqPtr := flag.Int("q", 100, "length of generator channel")
+	pruneqPtr := flag.Int("p", 100, "length of prune channel")
 	flag.Parse()
 
 	go reporter(1)

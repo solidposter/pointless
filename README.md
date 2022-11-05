@@ -7,20 +7,19 @@ The maintainer waits for an update or a timeout. If the maintainer gets an updat
 
 Pointless is configured with command line options.
 
-nacho$ pointless -h  
 Usage of pointless:  
   -g int  
-        number of random number generators (default 10)  
+        number of generators (default 10)  
   -i int  
-        interval of generated random numbers (range) (default 5000)  
+        range of generated random numbers (default 5000)  
   -l int  
-        data lifetime, unless refreshed, prune (default 30)  
+        maintainer timeout in seconds (default 30)  
   -p int  
-        length of prune channel buffer (default 100)  
+        length of prune channel (default 100)  
   -q int  
-        length of generator channel buffer (default 100)  
+        length of generator channel (default 100)  
   -r int  
-        rate of random numbers per second generated, per generator (default 50)  
+        generator rate in numbers per second (default 50)  
 nacho$  
 
 Example run on my old quad-core server, running OpenBSD7.2-current with go1.19.2:
@@ -37,5 +36,6 @@ Around 4M goroutines on an old server running OpenBSD, not bad.
 
 Note that when running OpenBSD the generators cannot exceed 50 values per second,
 this is not an issue with Linux or FreeBSD, with Linux being the king of timers.
+
 
 
