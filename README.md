@@ -1,53 +1,41 @@
 Pointless program that plays with goroutines and channels.
-I generate random numbers, and use a goroutine to manage the random number.
+It generates random numbers, and then manages them by creating a goroutine per number.
 
-generator(s) generate random numbers, encapsulates in a struct and inserts them into a channel.
+The generator(s) generate random numbers, encapsulates them in a struct and inserts them into a channel.
+The dispatcher reads that channel, and for each random number starts a maintainer goroutine to manage it.
+The maintainer waits for an update or a timeout. If the maintainer gets an update, which happens when the number that is managed is generated again, it will reset the timeout and again wait for update or timeout. If the timeout expires the maintainer will signal the dispatcher that it will shut down, and upon acknowledgement exit the goroutine.
 
-dispatcher reads that channel, and for each random number starts a maintainer goroutine to manage it.
+Pointless is configured with command line options.
 
-the manager keeps track of updates for that number, and if a timeout expires it will message the dispatcher, and upon acknowledgement kill the goroutine.
+nacho$ pointless -h
+Usage of pointless:
+  -g int
+        number of random number generators (default 10)
+  -i int
+        interval of generated random numbers (range) (default 5000)
+  -l int
+        data lifetime, unless refreshed, prune (default 30)
+  -p int
+        length of prune channel buffer (default 100)
+  -q int
+        length of generator channel buffer (default 100)
+  -r int
+        rate of random numbers per second generated, per generator (default 50)
+nacho$
 
-Some old tests when the settings used constants instead of flags on the command line:
+Example run on my old quad-core server, running OpenBSD7.2-current with go1.19.2:
 
-----
+nacho$ pointless -i 10000000 -q 100000 -p 100000 -g 3400
+... 30 minutes or so to stabilize, let GC hurt a little, and so on.
+Dispatcher values received: 168983
+Dispatcher prunes received: 102453
+Dispatcher map size: 3960029
+randomQblocks: 0
+pruneQblocks:  0
 
-On my OpenBSD test server:
+Around 4M goroutines on an old server running OpenBSD, not bad.
 
-        const interval int = 1000000 // interval for random numbers
-        const rate int = 50          // rate per generator
-        const generators int = 200   // number of generators
-        const lifetime int = 30      // data lifetime in seconds
+Note that when running OpenBSD the generators cannot exceed 50 values per second,
+this is not an issue with Linux or FreeBSD, with Linux being the king of timers.
 
-Gives me around 245k active goroutines once it stabilizes.
-
-----
-
-On my AWS t3.micro running Linux:
-
-        const interval int = 600000 // interval for random numbers
-        const rate int = 6000       // rate per generator
-        const generators int = 1    // number of generators
-        const lifetime int = 30     // data lifetime in seconds
-
-Gives me around 155k active goroutines, and I'm almost out of memory.
-
-----
-
-On my FreeBSD13 on a 64-core AMD Epyc I did:
-
-
-        const interval int = 20000000 // interval for random numbers
-        const rate int = 5000       // rate per generator
-        const generators int = 40    // number of generators
-        const lifetime int = 30     // data lifetime in seconds
-
-        const inputQsize int = 10000 // buffer size generators to dispatcher
-        const pruneQsize int = 10000 // buffer size mainters to dispatcher
-
-It is running around 5M active goroutines, with load across the CPU looking very nice. Looks like GC or something kicks in at times, 12000% CPU usage :)
-
-----
-
-In summary, goroutines scale well.
-Comparing OS, Linux is by far the king of the hill for running pointless.
 
