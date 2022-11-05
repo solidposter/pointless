@@ -7,6 +7,7 @@ The maintainer waits for an update or a timeout. If the maintainer gets an updat
 
 Pointless is configured with command line options.
 
+nacho$ pointless -h  
 Usage of pointless:  
   -g int  
         number of generators (default 10)  
@@ -36,6 +37,4 @@ Around 4M goroutines on an old server running OpenBSD, not bad.
 
 Note that when running OpenBSD the generators cannot exceed 50 values per second,
 this is not an issue with Linux or FreeBSD, with Linux being the king of timers.
-
-
 
